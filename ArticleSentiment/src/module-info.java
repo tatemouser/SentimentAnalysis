@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author tates
- *
- */
-module ArticleSentiment {
-}
