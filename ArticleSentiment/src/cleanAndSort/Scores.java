@@ -1,106 +1,137 @@
 package cleanAndSort;
 
-public class Scores {
-	//anger,anticipation,disgust,fear,joy,sadness,suprise,trust,negative,positive
-	private int anger;
-	private int anticipation;
-	private int disgust;
-	private int fear;
-	private int joy;
-	private int sadness;
-	private int suprise;
-	private int trust;
-	private int negative;
-	private int positive;
-	public Scores() {
-		this.anger = 0;
-		this.anticipation = 0;
-		this.disgust = 0;
-		this.fear = 0;
-		this.joy = 0;
-		this.sadness = 0;
-		this.suprise = 0;
-		this.trust = 0;
-		this.negative = 0;
-		this.positive = 0;
-	}
-	
-	//increment values then reset emotion position in total since it is at nine
-	public int hasNine(int num) {
-        String numberString = String.valueOf(num);
-        int position = numberString.indexOf('9');
-    	//anger,anticipation,disgust,fear,joy,sadness,suprise,trust,negative,positive
-        switch(position) {
-	        case 9: anger++;
-	        	break;
-	        case 8: anticipation++;
-	        	break;
-	        case 7: disgust++;
-	        	break;
-	        case 6: fear++;
-	        	break;
-	        case 5: joy++;
-	        	break;
-	        case 4: sadness++;
-	        	break;
-	        case 3: suprise++;
-	        	break;
-	        case 2: trust++;
-	        	break;
-	        case 1: negative++;
-	        	break;
-	        case 0: positive++;
-	        	break;
-        }
-        //reset emotion position value in total variable and return for further usage
-        String newString = numberString.replace('9', '0');
-        return Integer.parseInt(newString);
-	}
-	
-	public void wrapUp(int num) {
-		int i = 0;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
+public class Scores {
+
+	private LinkedHashMap<String, Long> emotions = new LinkedHashMap<>();
+	
+	public void createEmotionMap() {
+		emotions.put("anger", 0L);
+		emotions.put("anticipation", 0L);
+		emotions.put("disgust", 0L);
+		emotions.put("fear", 0L);
+		emotions.put("joy", 0L);
+		emotions.put("sadness", 0L);
+		emotions.put("suprise", 0L);
+		emotions.put("trust", 0L);
+		emotions.put("negative", 0L);
+		emotions.put("positive", 0L);
+	}
+	
+	// As an emotion is incremented 9 times, add 9 points to final hashmap for the emotion and reset digit in total
+	public long hasNine(long num) {
+        String numberString = String.valueOf(num);
+        ArrayList<Integer> positions = new ArrayList<Integer>();
+        // Find digit/digits with 9
+        for(int i = 0; i < numberString.length(); i++) {
+        	if(numberString.charAt(i) == '9') {
+        		positions.add(i);
+        	}
+        }
+        
+        // Increment correct emotion in hashmap by 9,  
+		while(positions.size() != 0) {
+	        int position = positions.get(0);
+	        String incrementEmotion = "";
+	        
+	        switch(position) {
+		        case 9: incrementEmotion = "anger";              
+		        	break;
+		        case 8: incrementEmotion = "anticipation";
+		        	break;
+		        case 7: incrementEmotion = "disgust";
+		        	break;
+		        case 6: incrementEmotion = "fear";
+		        	break;
+		        case 5: incrementEmotion = "joy";
+		        	break;
+		        case 4: incrementEmotion = "sadness";
+		        	break;
+		        case 3: incrementEmotion = "suprise";
+		        	break;
+		        case 2: incrementEmotion = "trust";
+		        	break;
+		        case 1: incrementEmotion = "negative";
+		        	break;
+		        case 0: incrementEmotion = "positive";
+		        	break;
+	        }
+	        
+        	long initial = emotions.get(incrementEmotion);
+        	emotions.replace(incrementEmotion, initial + 9);
+
+	        positions.remove(0);
+		}
+		
+		// Reset digit to 0, return new long
+        String newString = numberString.replace('9', '0');
+        return Long.parseLong(newString);
+	}
+	
+	// When comparing ends, iterate through digits in total and add to final hashmap of emotions.
+	public void wrapUp(long num) {
+	    
+		int i = 0;
+		String emotionSum = "";
+		
+		// Increment correct emotion in hashmap based on digit in total
 		while (num > 0) {
-			int amount = num % 10;
+			long amount = num % 10;
 		    num /= 10;
 		    //System.out.println(amount);
 		    switch(i) {
-		   		case 0: anger+=amount;
+	        	case 9: emotionSum = "anger";              
+        			break;
+		        case 8: emotionSum = "anticipation";
 		        	break;
-		        case 1: anticipation+=amount;
+		        case 7: emotionSum = "disgust";
 		        	break;
-		        case 2: disgust+=amount;
+		        case 6: emotionSum = "fear";
 		        	break;
-		        case 3: fear+=amount;
+		        case 5: emotionSum = "joy";
 		        	break;
-		        case 4: joy+=amount;
+		        case 4: emotionSum = "sadness";
 		        	break;
-		        case 5: sadness+=amount;
+		        case 3: emotionSum = "suprise";
 		        	break;
-		        case 6: suprise+=amount;
+		        case 2: emotionSum = "trust";
 		        	break;
-		        case 7: trust+=amount;
+		        case 1: emotionSum = "negative";
 		        	break;
-		        case 8: negative+=amount;
-		        	break;
-		        case 9: positive+=amount;
+		        case 0: emotionSum = "positive";
 		        	break;
 		    }
+	        emotions.replace(emotionSum, emotions.getOrDefault(emotionSum, 0L) + amount);
 		    i++;
-		}
+		}	
 	}
 	
-	public void printResults() {
-		int total = anger+anticipation+disgust+fear+joy+sadness+suprise+trust+negative+positive;
-		System.out.println(anger%total + "% emotion of anger.");
-		System.out.println(anticipation%total + "% emotion of anticipation.");
-		System.out.println(disgust%total + "% emotion of disgust.");
-		System.out.println(fear%total + "% emotion of fear.");
-		System.out.println(joy%total + "% emotion of joy.");
-		System.out.println(sadness%total + "% emotion of sadness.");
-		System.out.println(suprise%total + "% emotion of surprise.");
-		System.out.println(trust%total + "% emotion of trust.");
-		System.out.println(negative%total + "% emotion of negativity.");
-		System.out.println(positive%total + "% emotion of positivity.");
-	}
+	// After comparing text and converting total to the hashmap, prepare the hashmap for visuals class.
+	public HashMap<String, Long> sortMap() {
+		// Sort converted hashmap from smallest to largest
+        List<Map.Entry<String, Long>> entryList = new ArrayList<>(emotions.entrySet());
+        Comparator<Map.Entry<String, Long>> valueComparator = Comparator.comparing(Map.Entry::getValue);
+        entryList.sort(valueComparator);
+		
+        // Put the sorted entries into the original hashmap and get the total amount of matched words for converting to percentages.
+        emotions.clear();
+		int total = 0; 
+        for (Map.Entry<String, Long> entry : entryList) {
+        	emotions.put(entry.getKey(), entry.getValue());
+        	total += entry.getValue();
+        }
+        
+        // Convert to percentages
+        for (HashMap.Entry<String, Long> entry : emotions.entrySet()) {
+            emotions.replace(entry.getKey(), Math.round(entry.getValue() / (double) total * 100));
+        }
+        
+        return emotions;
+     }	
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 class TrieNode {
     private Map<Character, TrieNode> links;
     private boolean endOfWord;
-    private int code;
+    private double code;
 
     public TrieNode() {
         links = new HashMap<>();
@@ -34,11 +34,11 @@ class TrieNode {
         this.endOfWord = endOfWord;
     }
 
-    public int getCode() {
+    public double getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(double code) {
         this.code = code;
     }
 }

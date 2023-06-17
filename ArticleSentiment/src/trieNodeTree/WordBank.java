@@ -9,16 +9,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Test {
+public class WordBank {
 	private Trie trie;
-    public Test() throws IOException{
+    public WordBank() throws IOException{
     	
         trie = new Trie();
     	
     	String line = "";
-    	int code = 0;
+    	double code = 0;
     	
-        try (BufferedReader br = new BufferedReader(new FileReader("C:/Users/tates/OneDrive/Desktop/WordData.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/wordBankCSVFile/WordData.csv"))) {
             while ((line = br.readLine()) != null) {
                 //Find title word
                 String firstWord = line.split(",")[0].trim().replaceAll("[^\\x00-\\x7F]", "");
@@ -49,9 +49,9 @@ public class Test {
     
     
     
-    public static int newCode(String[] words) {
+    public static double newCode(String[] words) {
     	//anger,anticipation,disgust,fear,joy,sadness,suprise,trust,negative,positive
-    	int val = 0;
+    	double val = 0;
     	
     	for(int i = 0; i < words.length; i++) {
 
@@ -60,7 +60,7 @@ public class Test {
 	    			break;
 	    		case "anticipation": val+=10;
 	    			break;
-	    		case "disgust": val+=100;
+	    		case "disgust": val+=100; 
 	    			break;
 	    		case "fear": val+=1000;
 	    			break;
@@ -85,7 +85,7 @@ public class Test {
     	return trie.search(word);
     }
     
-    public int getWordCode(String word) {
+    public double getWordCode(String word) {
     	return trie.getCode(word);
     }
 }

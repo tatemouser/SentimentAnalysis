@@ -1,54 +1,67 @@
 package cleanAndSort;
-import java.io.BufferedReader;
-import java.io.FileReader;
+
 import java.io.IOException;
 import java.util.StringTokenizer;
-
+import scraper.Crawler;
 import trieNodeTree.*;
 
-
-/* Find the word within the word bank, move values for word forward to score class
- *
- */
-
+//CREATE A BOOK VERSION BY CREATING FILE STORAGE OF TEXT AND NORMAL WEBSITE READER AS STRING
 public class WordSearch {
+	// Emotions: anger,anticipation,disgust,fear,joy,sadness,suprise,trust,negative,positive
 	public static void main(String[] args) throws IOException {
-		Visuals v = new Visuals();
-		v.run();
-        //See if article words are in word bank
-		Test test = new Test();
-		        		
-		int total = 0;
 
-		Scores score = new Scores();		
+		WordBank wordBank = new WordBank();
 		
-		try (BufferedReader br = new BufferedReader(new FileReader("C:/Users/tates/OneDrive/Desktop/Small Text.txt"))) {
-		    String line;
-		    while ((line = br.readLine()) != null) {
-		        StringTokenizer tokenizer = new StringTokenizer(line, " \t\n\r\f.,;:?!\"'()");
+		/* 
+		 * Total is a 10 digit long. Each digit represents an emotions point value
+		 * Disgust = 100 and Fear = 1000, if disgust is used 3 times and fear 2 times, the total variable would be updated to 2300.
+		 */
+		long total = 0L;
 
-		        while (tokenizer.hasMoreTokens()) {
-		            String word = tokenizer.nextToken();
+		Scores score = new Scores();	
+		score.createEmotionMap();
+		
+		
+		
+		/*
+		 * SCRAPER - Collect data from website and store to line string for scoring.
+		 */
+		Crawler crawl = new Crawler();
+		String str = crawl.run();
+		//System.out.println(str);
+	    String text = str;
+	    
+	    
+	    
+	    /*
+	     * SCORING - Analyze words and compare to word bank while adjusting the total value
+	     */
+        StringTokenizer tokenizer = new StringTokenizer(text, " \t\n\r\f.,;:?!\"'()");
 
-		            // Remove punctuation and convert to lowercase
-		            String formattedWord = word.replaceAll("[^a-zA-Z]", "").toLowerCase();
-		            
-		            //run word through word bank
-		            if(test.doesWordExist(formattedWord)) {
-			            //increment and reset
-			            if(String.valueOf(total).contains("9")) {
-			            	total = score.hasNine(total);
-			            } else {
-			            	//increment
-			            	total += test.getWordCode(formattedWord);
-			            }
-		            }
-		        }
-		    }
-			score.wrapUp(total);
-			score.printResults();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
+        while (tokenizer.hasMoreTokens()) {
+            String word = tokenizer.nextToken();
+
+            String formattedWord = word.replaceAll("[^a-zA-Z]", "").toLowerCase();
+            
+            // Run word through word bank
+            if(wordBank.doesWordExist(formattedWord)) {
+	            // Reset digit in total variable if digit reaches 9.
+	            if(String.valueOf(total).contains("9")) {
+	            	total = (long) score.hasNine(total);
+	            }
+	            // Traditional increment to total if word is within the wordbank.
+	            total += wordBank.getWordCode(formattedWord);
+            }
+        }
+        // Take remaining values from total (Ex: 1837492002) and add to hashmap for visuals.
+		score.wrapUp(total); 
+		
+		
+		
+		/*
+		 * VISUALS - Search is complete, display results
+		 */
+		Visuals newTab = new Visuals(score.sortMap());
+		newTab.run(); 
 	}	
 }

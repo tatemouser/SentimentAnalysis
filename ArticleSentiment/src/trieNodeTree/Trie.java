@@ -6,7 +6,7 @@ class Trie {
         root = new TrieNode();
     }
 
-    public void insert(String word, int code) {
+    public void insert(String word, double code) {
         TrieNode current = root;
         for (char c : word.toCharArray()) {
             if (!current.containsKey(c)) {
@@ -23,7 +23,7 @@ class Trie {
         return node != null && node.isEndOfWord();
     }
 
-    public int getCode(String word) {
+    public double getCode(String word) {
         TrieNode node = searchPrefix(word);
         if (node != null && node.isEndOfWord()) {
             return node.getCode();
