@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import scraper.Crawler;
 import trieNodeTree.*;
 
-//CREATE A BOOK VERSION BY CREATING FILE STORAGE OF TEXT AND NORMAL WEBSITE READER AS STRING
+// ADD BOOK VERSION AND TITLE OF SITE TO VISUALS
 public class WordSearch {
 	// Emotions: anger,anticipation,disgust,fear,joy,sadness,suprise,trust,negative,positive
 	public static void main(String[] args) throws IOException {
@@ -24,11 +24,14 @@ public class WordSearch {
 		
 		
 		/*
+		 * INITIAL DISPLAY - Get link from user input to scrape.
 		 * SCRAPER - Collect data from website and store to line string for scoring.
 		 */
+		Visuals newTab = new Visuals();
+		String url = newTab.findLink();
+		
 		Crawler crawl = new Crawler();
-		String str = crawl.run();
-		//System.out.println(str);
+		String str = crawl.run(url);
 	    String text = str;
 	    
 	    
@@ -56,12 +59,11 @@ public class WordSearch {
         // Take remaining values from total (Ex: 1837492002) and add to hashmap for visuals.
 		score.wrapUp(total); 
 		
-		
+
 		
 		/*
-		 * VISUALS - Search is complete, display results
+		 * VISUALS - Search is complete, display results by creating new tab with chart.
 		 */
-		Visuals newTab = new Visuals(score.sortMap());
-		newTab.run(); 
+		newTab.createVisuals(score.sortMap());
 	}	
 }

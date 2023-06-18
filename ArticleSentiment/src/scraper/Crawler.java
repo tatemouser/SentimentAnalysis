@@ -16,8 +16,7 @@ public class Crawler {
 		mainText = "";
 	}
 	
-    public String run() {
-        String url = "https://nypost.com/2023/04/11/ai-bot-chaosgpt-tweet-plans-to-destroy-humanity-after-being-tasked/";
+    public String run(String url) {
         return crawl(1, url, new ArrayList<String>());
     }
 
@@ -48,13 +47,4 @@ public class Crawler {
         }
         return mainText;
     }
-
-    /*private static Document connect(String url) {
-        try {
-            return Jsoup.connect(url).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    } */
 }
