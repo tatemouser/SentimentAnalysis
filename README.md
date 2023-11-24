@@ -6,7 +6,6 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [License](#license)
 - [Contact](#contact)
 
 ## Project Description
@@ -37,9 +36,6 @@ https://www.cbsnews.com/pictures/presidents-ranked-worst-best/
 Output
 
 ![Results](https://github.com/tatemouser/SentimentAnalysis/assets/114375692/76837dca-fc50-4bee-b352-0cdcca7009d6)
-
-## License
-None
 
 ## Contact
 tatesmouser@gmail.com
